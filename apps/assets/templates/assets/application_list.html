@@ -50,7 +50,7 @@ function initTable() {
             }},
             {targets: 5, createdCell: function (td, cellData, rowData) {
                 var type = rowData.type;
-                var target;
+                var target = '';
                 if (type === 'chrome' || type === 'ie' || type === 'vmware' || type === 'custom'){
                     target = cellData[type + '_target']
                 }
@@ -62,7 +62,7 @@ function initTable() {
             }},
             {targets: 6, createdCell: function (td, cellData, rowData) {
                 var type = rowData.type;
-                var username = cellData[type + '_username'];
+                var username = cellData[type + '_username'] || '';
                 var login_username = htmlEscape(username);
                 $(td).html(login_username);
             }},

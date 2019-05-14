@@ -4,9 +4,8 @@
 from rest_framework_bulk import BulkModelViewSet
 from rest_framework.pagination import LimitOffsetPagination
 
-from ..models import Application
 from .. import serializers
-
+from ..models import Application
 from ..hands import IsOrgAdmin
 
 __all__ = [

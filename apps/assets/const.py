@@ -57,19 +57,14 @@ CACHE_KEY_ASSET_BULK_UPDATE_ID_PREFIX = '_KEY_ASSET_BULK_UPDATE_ID_{}'
 
 # Application
 
-# browser
 APP_TYPE_CHROME = 'chrome'
 APP_TYPE_IE = 'ie'
-# db tools
 APP_TYPE_PLSQL = 'plsql'
 APP_TYPE_MSSQL = 'mssql'
 APP_TYPE_MYSQL_WORKBENCH = 'mysql_workbench'
-# virtual tools
 APP_TYPE_VMWARE = 'vmware'
-# custom
 APP_TYPE_CUSTOM = 'custom'
 
-# choices
 APP_TYPE_CHOICES = (
     (
         _('Browser'),

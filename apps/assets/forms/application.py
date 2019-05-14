@@ -6,8 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from orgs.mixins import OrgModelForm
 
-from ..models import Application, Asset, SystemUser
 from .. import const
+from ..models import Application, Asset, SystemUser
 
 __all__ = [
     'ApplicationCreateUpdateForm',
@@ -157,7 +157,7 @@ class ApplicationCreateUpdateForm(ApplicationTypeForms, OrgModelForm):
             })
         }
 
-    def _get_params(self):
+    def _clean_params(self):
         app_type = self.data.get('type')
         fields = const.APP_TYPE_MAP_FIELDS.get(app_type, [])
         params = {}
@@ -168,7 +168,7 @@ class ApplicationCreateUpdateForm(ApplicationTypeForms, OrgModelForm):
         return params
 
     def _save_params(self, instance):
-        params = self._get_params()
+        params = self._clean_params()
         instance.params = params
         instance.save()
         return instance
