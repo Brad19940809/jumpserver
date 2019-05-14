@@ -14,7 +14,7 @@ __all__ = [
     'AssetPermissionUpdateUserSerializer', 'AssetPermissionUpdateAssetSerializer',
     'AssetPermissionNodeSerializer', 'GrantedNodeSerializer',
     'GrantedAssetSerializer', 'GrantedSystemUserSerializer',
-    'ActionSerializer',
+    'ActionSerializer', 'NodeGrantedSerializer',
 ]
 
 
