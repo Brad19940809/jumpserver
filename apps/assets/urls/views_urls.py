@@ -59,4 +59,10 @@ urlpatterns = [
     path('cmd-filter/<uuid:pk>/rule/', views.CommandFilterRuleListView.as_view(), name='cmd-filter-rule-list'),
     path('cmd-filter/<uuid:filter_pk>/rule/create/', views.CommandFilterRuleCreateView.as_view(), name='cmd-filter-rule-create'),
     path('cmd-filter/<uuid:filter_pk>/rule/<uuid:pk>/update/', views.CommandFilterRuleUpdateView.as_view(), name='cmd-filter-rule-update'),
+
+    # application
+    path('application/', views.ApplicationListView.as_view(), name='application-list'),
+    path('application/create/', views.ApplicationCreateView.as_view(), name='application-create'),
+    path('application/update/<uuid:pk>/', views.ApplicationUpdateView.as_view(), name='application-update'),
+    path('application/detail/<uuid:pk>/', views.ApplicationDetailView.as_view(), name='application-detail'),
 ]
