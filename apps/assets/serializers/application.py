@@ -22,11 +22,12 @@ class ApplicationSerializer(BulkSerializerMixin, serializers.ModelSerializer):
     class Meta:
         model = Application
         list_serializer_class = AdaptedBulkListSerializer
-        fields = '__all__'
-
-    def get_field_names(self, declared_fields, info):
-        fields = super().get_field_names(declared_fields, info)
-        fields.extend([
-            'asset_info', 'system_user_info', 'get_type_display'
-        ])
-        return fields
+        fields = [
+            'id', 'name', 'asset', 'system_user', 'type', 'path', 'params',
+            'comment', 'created_by', 'date_created',
+            'asset_info', 'system_user_info', 'get_type_display', 'org_id',
+        ]
+        read_only_fields = (
+            'created_by', 'date_created', 'asset_info', 'system_user_info',
+            'get_type_display', 'org_id'
+        )
