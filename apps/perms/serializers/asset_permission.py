@@ -4,9 +4,10 @@
 from rest_framework import serializers
 
 from common.fields import StringManyToManyField
-from perms.models import AssetPermission, Action
 from assets.models import Node, Asset, SystemUser
 from assets.serializers import AssetGrantedSerializer
+
+from ..models import AssetPermission, Action
 
 __all__ = [
     'AssetPermissionCreateUpdateSerializer', 'AssetPermissionListSerializer',
