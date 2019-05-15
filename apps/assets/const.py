@@ -58,9 +58,6 @@ CACHE_KEY_ASSET_BULK_UPDATE_ID_PREFIX = '_KEY_ASSET_BULK_UPDATE_ID_{}'
 # Application
 
 APP_TYPE_CHROME = 'chrome'
-APP_TYPE_IE = 'ie'
-APP_TYPE_PLSQL = 'plsql'
-APP_TYPE_MSSQL = 'mssql'
 APP_TYPE_MYSQL_WORKBENCH = 'mysql_workbench'
 APP_TYPE_VMWARE = 'vmware'
 APP_TYPE_CUSTOM = 'custom'
@@ -70,14 +67,11 @@ APP_TYPE_CHOICES = (
         _('Browser'),
         (
             (APP_TYPE_CHROME, 'Chrome'),
-            (APP_TYPE_IE, 'IE'),
         )
     ),
     (
         _('Database tools'),
         (
-            (APP_TYPE_PLSQL, 'PL/SQL'),
-            (APP_TYPE_MSSQL, 'msSQL'),
             (APP_TYPE_MYSQL_WORKBENCH, 'MySQL Workbench')
         )
     ),
@@ -101,23 +95,6 @@ APP_TYPE_CHROME_FIELDS = [
     {'name': 'chrome_username', 'encrypted': False},
     {'name': 'chrome_password', 'encrypted': True}
 ]
-APP_TYPE_IE_FIELDS = [
-    {'name': 'ie_target', 'encrypted': False},
-    {'name': 'ie_username', 'encrypted': False},
-    {'name': 'ie_password', 'encrypted': True}
-]
-APP_TYPE_PLSQL_FIELDS = [
-    {'name': 'plsql_ip', 'encrypted': False},
-    {'name': 'plsql_name', 'encrypted': False},
-    {'name': 'plsql_username', 'encrypted': False},
-    {'name': 'plsql_password', 'encrypted': True}
-]
-APP_TYPE_MSSQL_FIELDS = [
-    {'name': 'mssql_ip', 'encrypted': False},
-    {'name': 'mssql_name', 'encrypted': False},
-    {'name': 'mssql_username', 'encrypted': False},
-    {'name': 'mssql_password', 'encrypted': True}
-]
 APP_TYPE_MYSQL_WORKBENCH_FIELDS = [
     {'name': 'mysql_workbench_ip', 'encrypted': False},
     {'name': 'mysql_workbench_name', 'encrypted': False},
@@ -138,9 +115,6 @@ APP_TYPE_CUSTOM_FIELDS = [
 
 APP_TYPE_MAP_FIELDS = {
     APP_TYPE_CHROME: APP_TYPE_CHROME_FIELDS,
-    APP_TYPE_IE: APP_TYPE_IE_FIELDS,
-    APP_TYPE_PLSQL: APP_TYPE_PLSQL_FIELDS,
-    APP_TYPE_MSSQL: APP_TYPE_MSSQL_FIELDS,
     APP_TYPE_MYSQL_WORKBENCH: APP_TYPE_MYSQL_WORKBENCH_FIELDS,
     APP_TYPE_VMWARE: APP_TYPE_VMWARE_FIELDS,
     APP_TYPE_CUSTOM: APP_TYPE_CUSTOM_FIELDS

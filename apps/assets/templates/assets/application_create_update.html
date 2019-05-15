@@ -26,29 +26,6 @@
         {% bootstrap_field form.chrome_password layout="horizontal" %}
         </div>
 
-        {# ie #}
-        <div class="ie-fields">
-            {% bootstrap_field form.ie_target layout="horizontal" %}
-            {% bootstrap_field form.ie_username layout="horizontal" %}
-            {% bootstrap_field form.ie_password layout="horizontal" %}
-        </div>
-
-        {# plsql #}
-        <div class="plsql-fields">
-        {% bootstrap_field form.plsql_ip layout="horizontal" %}
-        {% bootstrap_field form.plsql_name layout="horizontal" %}
-        {% bootstrap_field form.plsql_username layout="horizontal" %}
-        {% bootstrap_field form.plsql_password layout="horizontal" %}
-        </div>
-
-        {# mssql #}
-        <div class="mssql-fields">
-            {% bootstrap_field form.mssql_ip layout="horizontal" %}
-            {% bootstrap_field form.mssql_name layout="horizontal" %}
-            {% bootstrap_field form.mssql_username layout="horizontal" %}
-            {% bootstrap_field form.mssql_password layout="horizontal" %}
-        </div>
-
         {# mysql workbench #}
         <div class="mysql_workbench-fields">
             {% bootstrap_field form.mysql_workbench_ip layout="horizontal" %}
@@ -90,9 +67,6 @@
 var type_id = '#' + '{{ form.type.id_for_label }}';
 var all_type_fields = [
     '.chrome-fields',
-    '.ie-fields',
-    '.plsql-fields',
-    '.mssql-fields',
     '.mysql_workbench-fields',
     '.vmware-fields',
     '.custom-fields'

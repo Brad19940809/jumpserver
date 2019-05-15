@@ -51,10 +51,10 @@ function initTable() {
             {targets: 5, createdCell: function (td, cellData, rowData) {
                 var type = rowData.type;
                 var target = '';
-                if (type === 'chrome' || type === 'ie' || type === 'vmware' || type === 'custom'){
+                if (type === 'chrome' || type === 'vmware' || type === 'custom'){
                     target = cellData[type + '_target']
                 }
-                else if (type === 'plsql' || type === 'mssql' || 'mysql_workbench'){
+                else if (type === 'mysql_workbench'){
                     target = cellData[type + '_ip'] + '/' + cellData[type + '_name'];
                 }
                 var _target = htmlEscape(target);

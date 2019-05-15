@@ -27,51 +27,6 @@ class ApplicationTypeChromeForm(forms.ModelForm):
     )
 
 
-class ApplicationTypeIEForm(forms.ModelForm):
-    ie_target = forms.CharField(
-        max_length=128, label=_('Target URL'), required=False
-    )
-    ie_username = forms.CharField(
-        max_length=128, label=_('Login username'), required=False
-    )
-    ie_password = forms.CharField(
-        widget=forms.PasswordInput, strip=True,
-        max_length=128, label=_('Login password'), required=False
-    )
-
-
-class ApplicationTypePLSQLForm(forms.ModelForm):
-    plsql_ip = forms.CharField(
-        max_length=128, label=_('Database IP'), required=False
-    )
-    plsql_name = forms.CharField(
-        max_length=128, label=_('Database name'), required=False
-    )
-    plsql_username = forms.CharField(
-        max_length=128, label=_('Database username'), required=False
-    )
-    plsql_password = forms.CharField(
-        widget=forms.PasswordInput, strip=True,
-        max_length=128, label=_('Database password'), required=False
-    )
-
-
-class ApplicationTypeMSSQLForm(forms.ModelForm):
-    mssql_ip = forms.CharField(
-        max_length=128, label=_('Database IP'), required=False
-    )
-    mssql_name = forms.CharField(
-        max_length=128, label=_('Database name'), required=False
-    )
-    mssql_username = forms.CharField(
-        max_length=128, label=_('Database username'), required=False
-    )
-    mssql_password = forms.CharField(
-        widget=forms.PasswordInput, strip=True,
-        max_length=128, label=_('Database password'), required=False
-    )
-
-
 class ApplicationTypeMySQLWorkbenchForm(forms.ModelForm):
     mysql_workbench_ip = forms.CharField(
         max_length=128, label=_('Database IP'), required=False
@@ -119,9 +74,6 @@ class ApplicationTypeCustomForm(forms.ModelForm):
 
 class ApplicationTypeForms(
     ApplicationTypeChromeForm,
-    ApplicationTypeIEForm,
-    ApplicationTypePLSQLForm,
-    ApplicationTypeMSSQLForm,
     ApplicationTypeMySQLWorkbenchForm,
     ApplicationTypeVMwareForm,
     ApplicationTypeCustomForm
