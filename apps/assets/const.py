@@ -72,7 +72,7 @@ APP_TYPE_CHOICES = (
     (
         _('Database tools'),
         (
-            (APP_TYPE_MYSQL_WORKBENCH, 'MySQL Workbench')
+            (APP_TYPE_MYSQL_WORKBENCH, 'MySQL Workbench'),
         )
     ),
     (

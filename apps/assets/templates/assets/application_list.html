@@ -33,44 +33,44 @@ function initTable() {
         ele: $('#application_list_table'),
         columnDefs: [
             {targets: 1, createdCell: function (td, cellData, rowData) {
-                cellData = htmlEscape(cellData);
-                {% url 'assets:application-detail' pk=DEFAULT_PK as the_url  %}
-                var detail_btn = '<a href="{{ the_url }}">' + cellData + '</a>';
-                $(td).html(detail_btn.replace('{{ DEFAULT_PK }}', rowData.id));
-            }},
+                    cellData = htmlEscape(cellData);
+                    {% url 'assets:application-detail' pk=DEFAULT_PK as the_url  %}
+                    var detail_btn = '<a href="{{ the_url }}">' + cellData + '</a>';
+                    $(td).html(detail_btn.replace('{{ DEFAULT_PK }}', rowData.id));
+                }},
             {targets: 2, createdCell: function (td, cellData, rowData) {
-                var hostname = htmlEscape(cellData.hostname);
-                var detail_btn = '<a href="{% url 'assets:asset-detail' pk=DEFAULT_PK %}">' + hostname + '</a>';
-                $(td).html(detail_btn.replace('{{ DEFAULT_PK }}', cellData.id));
-            }},
+                    var hostname = htmlEscape(cellData.hostname);
+                    var detail_btn = '<a href="{% url 'assets:asset-detail' pk=DEFAULT_PK %}">' + hostname + '</a>';
+                    $(td).html(detail_btn.replace('{{ DEFAULT_PK }}', cellData.id));
+                }},
             {targets: 3, createdCell: function (td, cellData, rowData) {
-                var name = htmlEscape(cellData.name);
-                var detail_btn = '<a href="{% url 'assets:system-user-detail' pk=DEFAULT_PK %}">' + name + '</a>';
-                $(td).html(detail_btn.replace('{{ DEFAULT_PK }}', cellData.id));
-            }},
+                    var name = htmlEscape(cellData.name);
+                    var detail_btn = '<a href="{% url 'assets:system-user-detail' pk=DEFAULT_PK %}">' + name + '</a>';
+                    $(td).html(detail_btn.replace('{{ DEFAULT_PK }}', cellData.id));
+                }},
             {targets: 5, createdCell: function (td, cellData, rowData) {
-                var type = rowData.type;
-                var target = '';
-                if (type === 'chrome' || type === 'vmware' || type === 'custom'){
-                    target = cellData[type + '_target']
-                }
-                else if (type === 'mysql_workbench'){
-                    target = cellData[type + '_ip'] + '/' + cellData[type + '_name'];
-                }
-                var _target = htmlEscape(target);
-                $(td).html(_target);
-            }},
+                    var type = rowData.type;
+                    var target = '';
+                    if (type === 'chrome' || type === 'vmware' || type === 'custom'){
+                        target = cellData[type + '_target']
+                    }
+                    else if (type === 'mysql_workbench'){
+                        target = cellData[type + '_ip'] + '/' + cellData[type + '_name'];
+                    }
+                    var _target = htmlEscape(target);
+                    $(td).html(_target);
+                }},
             {targets: 6, createdCell: function (td, cellData, rowData) {
-                var type = rowData.type;
-                var username = cellData[type + '_username'] || '';
-                var login_username = htmlEscape(username);
-                $(td).html(login_username);
-            }},
+                    var type = rowData.type;
+                    var username = cellData[type + '_username'] || '';
+                    var login_username = htmlEscape(username);
+                    $(td).html(login_username);
+                }},
             {targets: 8, createdCell: function (td, cellData, rowData) {
-                var update_btn = '<a href="{% url "assets:application-update" pk=DEFAULT_PK %}" class="btn btn-xs btn-info">{% trans "Update" %}</a>'.replace("{{ DEFAULT_PK }}", cellData);
-                var del_btn = '<a class="btn btn-xs btn-danger m-l-xs btn-delete" data-aid="{{ DEFAULT_PK }}">{% trans "Delete" %}</a>'.replace('{{ DEFAULT_PK }}', cellData);
-               $(td).html(update_btn + del_btn)
-           }}
+                    var update_btn = '<a href="{% url "assets:application-update" pk=DEFAULT_PK %}" class="btn btn-xs btn-info">{% trans "Update" %}</a>'.replace("{{ DEFAULT_PK }}", cellData);
+                    var del_btn = '<a class="btn btn-xs btn-danger m-l-xs btn-delete" data-aid="{{ DEFAULT_PK }}">{% trans "Delete" %}</a>'.replace('{{ DEFAULT_PK }}', cellData);
+                    $(td).html(update_btn + del_btn)
+                }}
         ],
         ajax_url: '{% url "api-assets:application-list" %}',
         columns: [

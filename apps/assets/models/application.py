@@ -88,7 +88,7 @@ class Application(OrgModelMixin):
         for field in fields:
             name = field['name']
             encrypted = field['encrypted']
-            value = data.get(name)
+            value = data.get(name, '')
             if encrypted:
                 value = signer.sign(value)
             _params.update({name: value})
