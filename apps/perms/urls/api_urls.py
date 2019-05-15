@@ -9,8 +9,14 @@ app_name = 'perms'
 router = routers.DefaultRouter()
 router.register('actions', api.ActionViewSet, 'action')
 router.register('asset-permissions', api.AssetPermissionViewSet, 'asset-permission')
+router.register('application-permissions', api.ApplicationPermissionViewSet, 'application-permission')
 
 urlpatterns = [
+
+    #
+    # Asset permission
+    #
+
     # 查询某个用户授权的资产和资产组
     path('user/<uuid:pk>/assets/',
          api.UserGrantedAssetsApi.as_view(), name='user-assets'),
@@ -70,6 +76,24 @@ urlpatterns = [
          name='validate-user-asset-permission'),
     path('asset-permission/user/actions/', api.GetUserAssetPermissionActionsApi.as_view(),
          name='get-user-asset-permission-actions'),
+
+    #
+    # Application permission
+    #
+
+    # 用户和应用的应用授权变更
+    path('application-permissions/<uuid:pk>/user/remove/',
+         api.ApplicationPermissionRemoveUserApi.as_view(),
+         name='application-permission-remove-user'),
+    path('application-permissions/<uuid:pk>/user/add/',
+         api.ApplicationPermissionAddUserApi.as_view(),
+         name='application-permission-add-user'),
+    path('application-permissions/<uuid:pk>/application/remove/',
+         api.ApplicationPermissionRemoveApplicationApi.as_view(),
+         name='application-permission-remove-application'),
+    path('application-permissions/<uuid:pk>/application/add/',
+         api.ApplicationPermissionAddApplicationApi.as_view(),
+         name='application-permission-add-application'),
 ]
 
 urlpatterns += router.urls
