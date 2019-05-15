@@ -76,7 +76,7 @@ APP_TYPE_CHOICES = (
         )
     ),
     (
-        _('Virtual tools'),
+        _('Virtualization tools'),
         (
             (APP_TYPE_VMWARE, 'VMware Client'),
         )
