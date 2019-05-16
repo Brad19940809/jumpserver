@@ -14,13 +14,15 @@ from rest_framework.pagination import LimitOffsetPagination
 from common.permissions import IsValidUser, IsOrgAdminOrAppUser
 from common.tree import TreeNodeSerializer
 from common.utils import get_logger
+from assets.serializers import ApplicationSerializer
 from orgs.utils import set_to_root_org
 from ..utils import (
     AssetPermissionUtil, parse_asset_to_tree_node, parse_node_to_tree_node,
-    check_system_user_action
+    check_system_user_action, ApplicationPermissionUtil,
+    get_application_tree_root, parse_application_to_tree_node,
 )
 from ..hands import (
-    AssetGrantedSerializer, User, Asset, Node,
+    AssetGrantedSerializer, User, Asset, Node, Application,
     SystemUser, NodeSerializer
 )
 from .. import serializers
@@ -34,7 +36,13 @@ __all__ = [
     'UserGrantedNodesWithAssetsApi', 'UserGrantedNodeAssetsApi',
     'ValidateUserAssetPermissionApi', 'UserGrantedNodeChildrenApi',
     'UserGrantedNodesWithAssetsAsTreeApi', 'GetUserAssetPermissionActionsApi',
+    'UserGrantedApplicationsApi', 'ValidateUserApplicationPermissionApi',
+    'UserGrantedApplicationsAsTreeApi',
 ]
+
+#
+# User asset permission
+#
 
 
 class UserPermissionCacheMixin:
@@ -447,3 +455,86 @@ class GetUserAssetPermissionActionsApi(UserPermissionCacheMixin, APIView):
 
         actions = [action.name for action in getattr(_su, 'actions', [])]
         return Response({'actions': actions}, status=200)
+
+
+#
+# User application permission
+#
+
+
+class UserGrantedApplicationsApi(ListAPIView):
+    """
+    用户授权的所有应用
+    """
+    permission_classes = (IsOrgAdminOrAppUser,)
+    serializer_class = ApplicationSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_object(self):
+        user_id = self.kwargs.get('pk', '')
+        if user_id:
+            user = get_object_or_404(User, id=user_id)
+        else:
+            user = self.request.user
+        return user
+
+    def get_queryset(self):
+        util = ApplicationPermissionUtil(self.get_object())
+        queryset = util.get_applications()
+        return queryset
+
+    def get_permissions(self):
+        if self.kwargs.get('pk') is None:
+            self.permission_classes = (IsValidUser,)
+        return super().get_permissions()
+
+
+class UserGrantedApplicationsAsTreeApi(ListAPIView):
+    serializer_class = TreeNodeSerializer
+    permission_classes = (IsOrgAdminOrAppUser,)
+
+    def get_permissions(self):
+        if self.kwargs.get('pk') is None:
+            self.permission_classes = (IsValidUser,)
+        return super().get_permissions()
+
+    def get_object(self):
+        user_id = self.kwargs.get('pk', '')
+        if not user_id:
+            user = self.request.user
+        else:
+            user = get_object_or_404(User, id=user_id)
+        return user
+
+    def get_queryset(self):
+        queryset = []
+        tree_root = get_application_tree_root()
+        queryset.append(tree_root)
+
+        user = self.get_object()
+        util = ApplicationPermissionUtil(user)
+        applications = util.get_applications()
+        for application in applications:
+            data = parse_application_to_tree_node(tree_root, application)
+            queryset.append(data)
+
+        queryset = sorted(queryset)
+        return queryset
+
+
+class ValidateUserApplicationPermissionApi(APIView):
+    permission_classes = (IsOrgAdminOrAppUser,)
+
+    def get(self, request, *args, **kwargs):
+        user_id = request.query_params.get('user_id', '')
+        application_id = request.query_params.get('application_id', '')
+        user = get_object_or_404(User, id=user_id)
+        application = get_object_or_404(Application, id=application_id)
+
+        util = ApplicationPermissionUtil(user)
+        granted_applications = util.get_applications()
+
+        if application not in granted_applications:
+            return Response({'msg': False}, status=403)
+
+        return Response({'msg': True}, status=200)

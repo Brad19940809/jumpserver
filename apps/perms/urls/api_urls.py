@@ -81,6 +81,27 @@ urlpatterns = [
     # Application permission
     #
 
+    # 查询某个用户授权的应用
+    path('user/<uuid:pk>/applications/',
+         api.UserGrantedApplicationsApi.as_view(),
+         name='user-applications'),
+    path('user/applications/',
+         api.UserGrantedApplicationsApi.as_view(),
+         name='my-applications'),
+    path('user/<uuid:pk>/applications/tree/',
+         api.UserGrantedApplicationsAsTreeApi.as_view(),
+         name='user-applications-as-tree'),
+
+    # 查询某个用户组授权的应用
+    path('user-group/<uuid:pk>/applications/',
+         api.UserGroupGrantedApplicationsApi.as_view(),
+         name='user-group-applications'),
+
+    # 验证用户是否有某个应用的权限
+    path('application-permission/user/validate/',
+         api.ValidateUserApplicationPermissionApi.as_view(),
+         name='validate-user-application-permission'),
+
     # 用户和应用的应用授权变更
     path('application-permissions/<uuid:pk>/user/remove/',
          api.ApplicationPermissionRemoveUserApi.as_view(),

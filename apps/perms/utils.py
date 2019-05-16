@@ -12,10 +12,15 @@ from django.conf import settings
 
 from common.utils import get_logger
 from common.tree import TreeNode
-from .models import AssetPermission, Action
+from .models import AssetPermission, Action, ApplicationPermission
 from .hands import Node
 
 logger = get_logger(__file__)
+
+
+#
+# Asset permission
+#
 
 
 class GenerateTree:
@@ -444,11 +449,6 @@ def parse_asset_to_tree_node(node, asset, system_users):
     return tree_node
 
 
-#
-# actions
-#
-
-
 def check_system_user_action(system_user, action):
     """
     :param system_user: SystemUser object (包含动态属性: actions)
@@ -460,3 +460,73 @@ def check_system_user_action(system_user, action):
     granted_actions = getattr(system_user, 'actions', [])
     actions = list(set(granted_actions).intersection(set(check_actions)))
     return bool(actions)
+
+
+#
+# Application permission
+#
+
+def get_user_application_permissions(user, include_group=True):
+    if include_group:
+        groups = user.groups.all()
+        arg = Q(users=user) | Q(user_groups__in=groups)
+    else:
+        arg = Q(users=user)
+    return ApplicationPermission.objects.all().valid().filter(arg)
+
+
+def get_user_group_application_permissions(user_group):
+    return ApplicationPermission.objects.all().valid().filter(
+        user_groups=user_group
+    )
+
+
+class ApplicationPermissionUtil:
+    get_permissions_map = {
+        "User": get_user_application_permissions,
+        "UserGroup": get_user_group_application_permissions,
+    }
+
+    def __init__(self, obj):
+        self.object = obj
+
+    @property
+    def permissions(self):
+        obj_class = self.object.__class__.__name__
+        func = self.get_permissions_map[obj_class]
+        _permissions = func(self.object)
+        return _permissions
+
+    def get_applications(self):
+        applications = set()
+        for perm in self.permissions:
+            applications.update(list(perm.applications.all()))
+        return applications
+
+
+def get_application_tree_root():
+    data = {
+        'id': 'ID_ROOT_REMOTE_APP',
+        'name': 'RemoteApp',
+        'title': 'RemoteApp',
+        'pId': '',
+        'open': True,
+        'isParent': True,
+        'iconSkin': '',
+        'meta': {}
+    }
+    return TreeNode(**data)
+
+
+def parse_application_to_tree_node(parent, application):
+    data = {
+        'id': application.id,
+        'name': application.name,
+        'title': application.name,
+        'pId': parent.id,
+        'open': False,
+        'isParent': 'False',
+        'iconSkin': 'app',
+        'meta': {}
+    }
+    return TreeNode(**data)

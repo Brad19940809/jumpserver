@@ -9,8 +9,10 @@ from rest_framework.generics import (
 from common.permissions import IsOrgAdmin, IsOrgAdminOrAppUser
 from common.tree import TreeNodeSerializer
 from orgs.utils import set_to_root_org
+from assets.serializers import ApplicationSerializer
 from ..utils import (
-    AssetPermissionUtil, parse_asset_to_tree_node, parse_node_to_tree_node
+    AssetPermissionUtil, parse_asset_to_tree_node, parse_node_to_tree_node,
+    ApplicationPermissionUtil,
 )
 from ..hands import (
     AssetGrantedSerializer, UserGroup,  Node, NodeSerializer
@@ -22,7 +24,12 @@ __all__ = [
     'UserGroupGrantedAssetsApi', 'UserGroupGrantedNodesApi',
     'UserGroupGrantedNodesWithAssetsApi', 'UserGroupGrantedNodeAssetsApi',
     'UserGroupGrantedNodesWithAssetsAsTreeApi',
+    'UserGroupGrantedApplicationsApi',
 ]
+
+#
+# User Group asset permission
+#
 
 
 class UserGroupGrantedAssetsApi(ListAPIView):
@@ -138,3 +145,23 @@ class UserGroupGrantedNodeAssetsApi(ListAPIView):
         for asset, system_users in assets.items():
             asset.system_users_granted = system_users
         return assets
+
+
+#
+# User Group application permission
+#
+
+
+class UserGroupGrantedApplicationsApi(ListAPIView):
+    permission_classes = (IsOrgAdmin,)
+    serializer_class = ApplicationSerializer
+
+    def get_queryset(self):
+        queryset = []
+        user_group_id = self.kwargs.get('pk', '')
+        if not user_group_id:
+            return queryset
+        user_group = get_object_or_404(UserGroup, id=user_group_id)
+        util = ApplicationPermissionUtil(user_group)
+        queryset = util.get_applications()
+        return queryset

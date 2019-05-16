@@ -8,10 +8,11 @@ from common.serializers import AdaptedBulkListSerializer
 from common.fields.serializer import DictField
 
 from ..models import Application
+from .. import const
 
 
 __all__ = [
-    'ApplicationSerializer',
+    'ApplicationSerializer', 'ApplicationConnectionInfoSerializer',
 ]
 
 
@@ -42,3 +43,29 @@ class ApplicationSerializer(BulkSerializerMixin, serializers.ModelSerializer):
         instance = self._save_params(instance)
         return instance
 
+
+class ApplicationConnectionInfoSerializer(serializers.ModelSerializer):
+    remote_app_params = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Application
+        fields = [
+            'id', 'name', 'asset', 'system_user', 'remote_app_params',
+        ]
+
+    @staticmethod
+    def get_remote_app_params(obj):
+        parameters = [obj.type]
+        path = '\"{}\"'.format(obj.path)
+        parameters.append(path)
+        fields = const.APP_TYPE_MAP_FIELDS[obj.type]
+        for field in fields:
+            value = obj.params.get(field['name'])
+            parameters.append(value)
+
+        params = {
+            'program': '||boot-program-name',
+            'working_directory': '',
+            'parameters': " ".join(parameters)
+        }
+        return params

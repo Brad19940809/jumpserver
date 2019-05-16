@@ -1,5 +1,11 @@
 {% extends '_base_list.html' %}
 {% load i18n static %}
+{% block help_message %}
+<div class="alert alert-info help-message">
+    {% trans 'Upload the application loader to the application server and publish it as a RemoteApp application.' %}
+    <b><a href="#">{% trans 'Download application loader' %}</a></b>
+</div>
+{% endblock %}
 {% block table_search %}{% endblock %}
 {% block table_container %}
     <div class="uc pull-left  m-r-5">
